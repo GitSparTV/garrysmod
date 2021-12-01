@@ -430,7 +430,15 @@ local function CC_UndoLast( pl, command, args )
 	end
 
 	-- No undos
-	if ( !last ) then return end
+	if ( !last ) then
+		net.Start( "Undo_FireUndo")
+			net.WriteString("")
+			net.WriteBool(true)
+			net.WriteString("#hint.undoneNone")
+		net.Send( pl )
+
+		return
+	end
 
 	-- This is quite messy, but if the player rejoined the server
 	-- 'Owner' might no longer be a valid entity. So replace the Owner
